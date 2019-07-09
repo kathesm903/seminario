@@ -1,0 +1,938 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Proyecto\_seminario}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{aplicaciuxf3n-de-un-modelo-oculto-de-muxe1rkov-para-determinar-el-grado-de-honestidad-de-una-persona-al-responder-preguntas.}{%
+\section{Aplicación de un modelo oculto de Márkov para determinar el
+grado de honestidad de una persona al responder
+preguntas.}\label{aplicaciuxf3n-de-un-modelo-oculto-de-muxe1rkov-para-determinar-el-grado-de-honestidad-de-una-persona-al-responder-preguntas.}}
+
+    \hypertarget{dependencias}{%
+\subsection{Dependencias:}\label{dependencias}}
+
+Para la realización de este proyecto se necesitaron las siguientes
+librerías:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  numpy: Es un paquete fundamental necesario para la computación
+  científica con Python.
+\item
+  pandas: Es una biblioteca de código abierto que proporciona
+  estructuras de datos de alto rendimiento y fáciles de usar, y
+  herramientas de análisis de datos.
+\item
+  NetworkX: Es un paquete de Python para la creación, manipulación y
+  estudio de la estructura, dinámica y funciones de redes complejas.
+\item
+  Matplotlib: Es una biblioteca para hacer diagramas 2D de matrices en
+  Python.
+\end{enumerate}
+
+    \hypertarget{descripciuxf3n-del-modelo}{%
+\subsection{Descripción del
+modelo:}\label{descripciuxf3n-del-modelo}}
+
+Este modelo permite descubrir si una persona es honesta por medio de
+``señales honestas'' luego de realizarle varias preguntas en una
+entrevista.
+
+El modelo está compuesto de tres estados ocultos(deshonesto, insierto y
+honesto) con probabilidades iniciales de 1/3 cada uno, cinco estados
+observables(cubrirse la boca, mantener una mirada fija, mantener un tono
+de voz inestable, tocarse la nariz, rascarse el cuello o cubrir el área
+de la garganta), la matriz de transición de estados (MxM), la matriz de
+emisión (MxO) y una secuencia de datos de observación.
+
+La idea es determinar cual es el estado oculto mas probable al responder
+una pregunta.
+
+    \hypertarget{implementaciuxf3n-del-modelo}{%
+\subsection{Implementación del modelo:}\label{implementaciuxf3n-del-modelo}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{networkx} \PY{k}{as} \PY{n+nn}{nx}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{k+kn}{from} \PY{n+nn}{pprint} \PY{k}{import} \PY{n}{pprint}
+\end{Verbatim}
+\end{tcolorbox}
+
+\break
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\hspace{4pt}}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{viterbi}\PY{p}{(}\PY{n}{pi}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{obs}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{nStates} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{shape}\PY{p}{(}\PY{n}{b}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{T} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{shape}\PY{p}{(}\PY{n}{obs}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+   
+    \PY{c+c1}{\PYZsh{} Camino inicial. Matrices con ceros.}
+    \PY{n}{path} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{T}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} delta \PYZhy{}\PYZhy{}\PYZgt{} mayor probabilidad de cualquier camino que alcance el estado i.}
+    \PY{n}{delta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{nStates}\PY{p}{,} \PY{n}{T}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} phi \PYZhy{}\PYZhy{}\PYZgt{} argmax por paso de tiempo para cada estado}
+    \PY{n}{phi} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{nStates}\PY{p}{,} \PY{n}{T}\PY{p}{)}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} inicio}
+    \PY{n}{delta}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{pi} \PY{o}{*} \PY{n}{b}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{obs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
+    \PY{n}{phi}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Inicio. Caminar hacia adelante}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    
+    \PY{c+c1}{\PYZsh{} Extensión del algoritmo directo}
+    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{T}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{nStates}\PY{p}{)}\PY{p}{:}
+                
+            \PY{n}{delta}\PY{p}{[}\PY{n}{s}\PY{p}{,} \PY{n}{t}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{delta}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{t}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{s}\PY{p}{]}\PY{p}{)} \PY{o}{*} \PY{n}{b}\PY{p}{[}\PY{n}{s}\PY{p}{,} \PY{n}{obs}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{]} 
+            \PY{n}{phi}\PY{p}{[}\PY{n}{s}\PY{p}{,} \PY{n}{t}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{delta}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{t}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{s}\PY{p}{]}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s=}\PY{l+s+si}{\PYZob{}s\PYZcb{}}\PY{l+s+s1}{ and t=}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{: phi[}\PY{l+s+si}{\PYZob{}s\PYZcb{}}\PY{l+s+s1}{, }\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{] = }\PY{l+s+si}{\PYZob{}phi\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{s}\PY{o}{=}\PY{n}{s}\PY{p}{,} \PY{n}{t}\PY{o}{=}\PY{n}{t}\PY{p}{,} \PY{n}{phi}\PY{o}{=}\PY{n}{phi}\PY{p}{[}\PY{n}{s}\PY{p}{,} \PY{n}{t}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Encontrar el camino óptimo}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{50}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iniciar retroceso}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{path}\PY{p}{[}\PY{n}{T}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{delta}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{T}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+    
+    
+    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{T}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        
+        \PY{n}{x} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{path}\PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+    
+        \PY{n}{path}\PY{p}{[}\PY{n}{t}\PY{p}{]} \PY{o}{=} \PY{n}{phi}\PY{p}{[}\PY{n}{x}\PY{p}{,} \PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{path[}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{] = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{path}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        
+    \PY{k}{return} \PY{n}{path}\PY{p}{,} \PY{n}{delta}\PY{p}{,} \PY{n}{phi}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{descripciuxf3n-del-entrenamiento}{%
+\subsection{Descripción del
+entrenamiento:}\label{descripciuxf3n-del-entrenamiento}}
+
+    Se utilizó el algoritmo de Baum-Welch para definir la matriz de
+transición de estados ocultos y la matriz de emision u observación. Este
+algoritmo de entrenamiento necesita como parámetros los estados
+observables, los estados ocultos y la probabilidad inicial de los
+estados ocultos. Luego estas matrices se pasan como parámetros al
+algoritmo de Viterbi junto con la probabilidad inicial de los estados
+ocultos para conseguir la secuencia mas probable de estados ocultos
+(deshonesto, neutral y honesto) que es producida por una secuencia de
+estados observables(cubrirse la boca, mantener una mirada fija, mantener
+un tono de voz inestable, tocarse la nariz y cubrir el área de la
+garganta) con el fin de determinar si la persona entrevistada esta
+siendo honesta con sus respuestas.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{initial\PYZus{}distribution}\PY{p}{)}\PY{p}{:}
+    \PY{n}{alpha} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{V}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n}{alpha}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{initial\PYZus{}distribution} \PY{o}{*} \PY{n}{b}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
+
+    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{V}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Matrix Computation Steps}
+            \PY{c+c1}{\PYZsh{}                  ((1x2) . (1x2))      *     (1)}
+            \PY{c+c1}{\PYZsh{}                        (1)            *     (1)}
+            \PY{n}{alpha}\PY{p}{[}\PY{n}{t}\PY{p}{,} \PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{alpha}\PY{p}{[}\PY{n}{t} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{p}{)} \PY{o}{*} \PY{n}{b}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{]}
+            
+    \PY{k}{return} \PY{n}{alpha}
+ 
+
+\PY{k}{def} \PY{n+nf}{backward}\PY{p}{(}\PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:}
+    \PY{n}{beta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{V}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} setting beta(T) = 1}
+    \PY{n}{beta}\PY{p}{[}\PY{n}{V}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Loop in backward way from T\PYZhy{}1 to}
+    \PY{c+c1}{\PYZsh{} Due to python indexing the actual loop will be T\PYZhy{}2 to 0}
+    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{V}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+            \PY{n}{beta}\PY{p}{[}\PY{n}{t}\PY{p}{,} \PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{beta}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{b}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{beta}
+ 
+
+\PY{k}{def} \PY{n+nf}{baum\PYZus{}welch}\PY{p}{(}\PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{initial\PYZus{}distribution}\PY{p}{,} \PY{n}{n\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{:}
+    \PY{n}{M} \PY{o}{=} \PY{n}{a}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{T} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{V}\PY{p}{)}
+
+    \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+        \PY{n}{alpha} \PY{o}{=} \PY{n}{forward}\PY{p}{(}\PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{initial\PYZus{}distribution}\PY{p}{)}
+        \PY{n}{beta} \PY{o}{=} \PY{n}{backward}\PY{p}{(}\PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}
+
+        \PY{n}{xi} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{M}\PY{p}{,} \PY{n}{M}\PY{p}{,} \PY{n}{T} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+        \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{T} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{n}{denominator} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{alpha}\PY{p}{[}\PY{n}{t}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{a}\PY{p}{)} \PY{o}{*} \PY{n}{b}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{beta}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{M}\PY{p}{)}\PY{p}{:}
+                \PY{n}{numerator} \PY{o}{=} \PY{n}{alpha}\PY{p}{[}\PY{n}{t}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{*} \PY{n}{a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{*} \PY{n}{b}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{T} \PY{o}{*} \PY{n}{beta}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{T}
+                \PY{n}{xi}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{n}{t}\PY{p}{]} \PY{o}{=} \PY{n}{numerator} \PY{o}{/} \PY{n}{denominator}
+                
+        \PY{n}{gamma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{xi}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{xi}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{gamma}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Add additional T\PYZsq{}th element in gamma}
+        \PY{n}{gamma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{hstack}\PY{p}{(}\PY{p}{(}\PY{n}{gamma}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{xi}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{n}{T} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+        \PY{n}{K} \PY{o}{=} \PY{n}{b}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+        \PY{n}{denominator} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{gamma}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{k}{for} \PY{n}{l} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{:}
+            \PY{n}{b}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{l}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{gamma}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{V} \PY{o}{==} \PY{n}{l}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+        \PY{n}{b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{divide}\PY{p}{(}\PY{n}{b}\PY{p}{,} \PY{n}{denominator}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        
+
+    \PY{k}{return} \PY{n}{a}\PY{p}{,} \PY{n}{b}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Se pasan los parametros al modelo de entrenamiento:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/home/katherine/compu\PYZus{}kathe/9no\PYZus{}semestre/seminario/proyecto\PYZus{}seminario/prueba1.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{V} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{visible}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}
+\PY{n}{obs\PYZus{}map} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TN}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CG}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{VI}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NO}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}
+\PY{c+c1}{\PYZsh{}CB = cubrir boca, MF = Mirada fija, VI= tono voz inestable, CG = cubrirse garganta TN = tocarse la nariz, }
+\PY{c+c1}{\PYZsh{}NO = niguna de las anteriores.  }
+
+\PY{n}{array} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{V}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}print(\PYZsq{}\PYZbs{}n i: \PYZsq{},i)}
+    \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{n}{v} \PY{o+ow}{in} \PY{n}{obs\PYZus{}map}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+       \PY{c+c1}{\PYZsh{} print(\PYZsq{}k : \PYZsq{},k,\PYZsq{} v: \PYZsq{}, v)}
+        \PY{k}{if} \PY{n}{i} \PY{o}{==} \PY{n}{k}\PY{p}{:}
+            \PY{n}{array}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+
+\PY{n}{obs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{array}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Transition Probabilities}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{a} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Estas son las probabilidades de estado inicial}
+\PY{n}{pi} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Emission Probabilities}
+\PY{n}{b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}print(\PYZsq{}B: \PYZsq{},b)}
+\PY{n}{b} \PY{o}{=} \PY{n}{b} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{b}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{o}{=} \PY{n}{baum\PYZus{}welch}\PY{p}{(}\PY{n}{obs}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{pi}\PY{p}{,} \PY{n}{n\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MATRIZ A: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MATRIZ B: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MATRIZ A:  [[2.09834444e-01 5.80331112e-01 2.09834444e-01]
+ [2.65586933e-05 9.99946883e-01 2.65586933e-05]
+ [2.09834444e-01 5.80331112e-01 2.09834444e-01]]
+
+MATRIZ B:  [[9.56372350e-132 1.00000000e+000 1.28337566e-010 4.23819947e-131
+  1.41836799e-132 8.10545154e-094]
+ [1.19903231e-001 1.60677384e-001 2.39806462e-001 1.19903231e-001
+  1.19903231e-001 2.39806462e-001]
+ [9.56372350e-132 1.00000000e+000 1.28337566e-010 4.23819947e-131
+  1.41836799e-132 8.10545154e-094]]
+
+\end{Verbatim}
+
+    Se muestran las matrices de transición y observación
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Se asigna a un arreglo los estados ocultos}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Probabilidades Iniciales de los Estados Ocultos: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{hidden\PYZus{}states} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{deshonesto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{incierto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{honesto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{state\PYZus{}space} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{pi}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{hidden\PYZus{}states}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estados}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{state\PYZus{}space}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{state\PYZus{}space}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Matriz de probabilidad de transición de estados cambiantes dado un estado}
+\PY{c+c1}{\PYZsh{}Se crea una matriz (MxM) donde M es el número de estados.}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Matriz de Transición De modelo: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{a\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{hidden\PYZus{}states}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{hidden\PYZus{}states}\PY{p}{)}
+\PY{n}{a\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{hidden\PYZus{}states}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{a\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{hidden\PYZus{}states}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{a\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{hidden\PYZus{}states}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a\PYZus{}df}\PY{p}{)}
+
+\PY{n}{a\PYZus{}model} \PY{o}{=} \PY{n}{a\PYZus{}df}\PY{o}{.}\PY{n}{values}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{a\PYZus{}model}\PY{p}{,} \PY{n}{a\PYZus{}model}\PY{o}{.}\PY{n}{shape}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a\PYZus{}df}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Probabilidades Iniciales de los Estados Ocultos:
+
+deshonesto    0.333333
+incierto      0.333333
+honesto       0.333333
+Name: Estados, dtype: float64
+
+ 1.0
+
+
+Matriz de Transición De modelo:
+
+             deshonesto  incierto      honesto
+deshonesto     0.209834  0.580331     0.209834
+incierto    2.65587e-05  0.999947  2.65587e-05
+honesto        0.209834  0.580331     0.209834
+
+ [[0.20983444405145937 0.580331111897081 0.20983444405145937]
+ [2.655869325990881e-05 0.9999468826134802 2.655869325990881e-05]
+ [0.20983444405145937 0.580331111897081 0.20983444405145937]] (3, 3)
+
+deshonesto    1.0
+incierto      1.0
+honesto       1.0
+dtype: float64
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Matriz de probabilidad de emisión u observación.}
+\PY{c+c1}{\PYZsh{}b = probabilidad de observación dada el estado.}
+\PY{c+c1}{\PYZsh{}La matriz es el tamaño (M x O) donde M es el número de estados}
+\PY{c+c1}{\PYZsh{}y O es el número de diferentes observaciones posibles.}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ Matriz de probabilidad de Emisión u observación del entrenamiento: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{states} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TN}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CG}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{VI}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NO}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{observable\PYZus{}states} \PY{o}{=} \PY{n}{states}
+
+\PY{n}{b\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{observable\PYZus{}states}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{hidden\PYZus{}states}\PY{p}{)}
+\PY{n}{b\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{hidden\PYZus{}states}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{b}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{b\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{hidden\PYZus{}states}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{b}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{b\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{hidden\PYZus{}states}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{b}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{b\PYZus{}df}\PY{p}{)}
+
+\PY{n}{b\PYZus{}model} \PY{o}{=} \PY{n}{b\PYZus{}df}\PY{o}{.}\PY{n}{values}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{b\PYZus{}model}\PY{p}{,} \PY{n}{b\PYZus{}model}\PY{o}{.}\PY{n}{shape}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{b\PYZus{}df}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+ Matriz de probabilidad de Emisión u observación del entrenamiento:
+
+                      CB        TN           CG           MF            VI  \textbackslash{}
+deshonesto  9.56372e-132         1  1.28338e-10  4.2382e-131  1.41837e-132
+incierto        0.119903  0.160677     0.239806     0.119903      0.119903
+honesto     9.56372e-132         1  1.28338e-10  4.2382e-131  1.41837e-132
+
+                     NO
+deshonesto  8.10545e-94
+incierto       0.239806
+honesto     8.10545e-94
+
+ [[9.563723497050358e-132 0.9999999998716623 1.2833756645962422e-10
+  4.23819947420096e-131 1.4183679870705015e-132 8.10545153668598e-94]
+ [0.11990323086750634 0.16067738395299896 0.23980646170946943
+  0.11990323086750634 0.11990323086750634 0.2398064617350127]
+ [9.563723497050358e-132 0.9999999998716623 1.2833756645962422e-10
+  4.23819947420096e-131 1.4183679870705015e-132 8.10545153668598e-94]] (3, 6)
+
+deshonesto    1.0
+incierto      1.0
+honesto       1.0
+dtype: float64
+
+
+\end{Verbatim}
+
+    Se inserta la secuencia de observaciones del entrevistado:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Secuencia de Observaciones.}
+\PY{n}{obs\PYZus{}vi} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{array\PYZus{}nstates} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+\PY{n}{inv\PYZus{}obs\PYZus{}map} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{(}\PY{n}{v}\PY{p}{,}\PY{n}{k}\PY{p}{)} \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{n}{v} \PY{o+ow}{in} \PY{n}{obs\PYZus{}map}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{obs\PYZus{}seq} \PY{o}{=} \PY{p}{[}\PY{n}{inv\PYZus{}obs\PYZus{}map}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n+nb}{list}\PY{p}{(}\PY{n}{obs\PYZus{}vi}\PY{p}{)}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{column\PYZus{}stack}\PY{p}{(}\PY{p}{[}\PY{n}{obs\PYZus{}vi}\PY{p}{,} \PY{n}{obs\PYZus{}seq}\PY{p}{]}\PY{p}{)}\PY{p}{,} 
+                \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Código}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Secuencia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\break
+    \begin{Verbatim}[commandchars=\\\{\}]
+   Código Secuencia
+0       0        CB
+1       0        CB
+2       0        CB
+3       0        CB
+4       0        CB
+5       0        CB
+6       0        CB
+7       0        CB
+8       0        CB
+9       0        CB
+10      0        CB
+11      0        CB
+12      0        CB
+13      0        CB
+14      0        CB
+15      0        CB
+16      0        CB
+17      0        CB
+18      1        TN
+19      1        TN
+20      1        TN
+21      1        TN
+\end{Verbatim}
+
+    Se llama la función de Viterbi para calcular el estado oculto mas
+probable:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{path}\PY{p}{,} \PY{n}{delta}\PY{p}{,} \PY{n}{phi} \PY{o}{=} \PY{n}{viterbi}\PY{p}{(}\PY{n}{pi}\PY{p}{,} \PY{n}{a\PYZus{}model}\PY{p}{,} \PY{n}{b\PYZus{}model}\PY{p}{,} \PY{n}{obs\PYZus{}vi}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ La mejor ruta del estado: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{path}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ delta:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{delta}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{phi:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{phi}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Inicio. Caminar hacia adelante
+
+s=0 and t=1: phi[0, 1] = 1.0
+s=1 and t=1: phi[1, 1] = 1.0
+s=2 and t=1: phi[2, 1] = 1.0
+s=0 and t=2: phi[0, 2] = 1.0
+s=1 and t=2: phi[1, 2] = 1.0
+s=2 and t=2: phi[2, 2] = 1.0
+s=0 and t=3: phi[0, 3] = 1.0
+s=1 and t=3: phi[1, 3] = 1.0
+s=2 and t=3: phi[2, 3] = 1.0
+s=0 and t=4: phi[0, 4] = 1.0
+s=1 and t=4: phi[1, 4] = 1.0
+s=2 and t=4: phi[2, 4] = 1.0
+s=0 and t=5: phi[0, 5] = 1.0
+s=1 and t=5: phi[1, 5] = 1.0
+s=2 and t=5: phi[2, 5] = 1.0
+s=0 and t=6: phi[0, 6] = 1.0
+s=1 and t=6: phi[1, 6] = 1.0
+s=2 and t=6: phi[2, 6] = 1.0
+s=0 and t=7: phi[0, 7] = 1.0
+s=1 and t=7: phi[1, 7] = 1.0
+s=2 and t=7: phi[2, 7] = 1.0
+s=0 and t=8: phi[0, 8] = 1.0
+s=1 and t=8: phi[1, 8] = 1.0
+s=2 and t=8: phi[2, 8] = 1.0
+s=0 and t=9: phi[0, 9] = 1.0
+s=1 and t=9: phi[1, 9] = 1.0
+s=2 and t=9: phi[2, 9] = 1.0
+s=0 and t=10: phi[0, 10] = 1.0
+s=1 and t=10: phi[1, 10] = 1.0
+s=2 and t=10: phi[2, 10] = 1.0
+s=0 and t=11: phi[0, 11] = 1.0
+s=1 and t=11: phi[1, 11] = 1.0
+s=2 and t=11: phi[2, 11] = 1.0
+s=0 and t=12: phi[0, 12] = 1.0
+s=1 and t=12: phi[1, 12] = 1.0
+s=2 and t=12: phi[2, 12] = 1.0
+s=0 and t=13: phi[0, 13] = 1.0
+s=1 and t=13: phi[1, 13] = 1.0
+s=2 and t=13: phi[2, 13] = 1.0
+s=0 and t=14: phi[0, 14] = 1.0
+s=1 and t=14: phi[1, 14] = 1.0
+s=2 and t=14: phi[2, 14] = 1.0
+s=0 and t=15: phi[0, 15] = 1.0
+s=1 and t=15: phi[1, 15] = 1.0
+s=2 and t=15: phi[2, 15] = 1.0
+s=0 and t=16: phi[0, 16] = 1.0
+s=1 and t=16: phi[1, 16] = 1.0
+s=2 and t=16: phi[2, 16] = 1.0
+s=0 and t=17: phi[0, 17] = 1.0
+s=1 and t=17: phi[1, 17] = 1.0
+s=2 and t=17: phi[2, 17] = 1.0
+s=0 and t=18: phi[0, 18] = 1.0
+s=1 and t=18: phi[1, 18] = 1.0
+s=2 and t=18: phi[2, 18] = 1.0
+s=0 and t=19: phi[0, 19] = 0.0
+s=1 and t=19: phi[1, 19] = 1.0
+s=2 and t=19: phi[2, 19] = 0.0
+s=0 and t=20: phi[0, 20] = 0.0
+s=1 and t=20: phi[1, 20] = 1.0
+s=2 and t=20: phi[2, 20] = 0.0
+s=0 and t=21: phi[0, 21] = 0.0
+s=1 and t=21: phi[1, 21] = 1.0
+s=2 and t=21: phi[2, 21] = 0.0
+--------------------------------------------------
+Iniciar retroceso
+
+path[20] = 1.0
+path[19] = 1.0
+path[18] = 1.0
+path[17] = 1.0
+path[16] = 1.0
+path[15] = 1.0
+path[14] = 1.0
+path[13] = 1.0
+path[12] = 1.0
+path[11] = 1.0
+path[10] = 1.0
+path[9] = 1.0
+path[8] = 1.0
+path[7] = 1.0
+path[6] = 1.0
+path[5] = 1.0
+path[4] = 1.0
+path[3] = 1.0
+path[2] = 1.0
+path[1] = 1.0
+path[0] = 1.0
+
+ La mejor ruta del estado:
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+
+ delta:
+ [[3.18790783e-132 1.01518068e-137 1.21716978e-138 1.45934837e-139
+  1.74971290e-140 2.09785086e-141 2.51525735e-142 3.01571464e-143
+  3.61574721e-144 4.33516744e-145 5.19772972e-146 6.23191483e-147
+  7.47187032e-148 8.95853804e-149 1.07410060e-149 1.28781291e-150
+  1.54404727e-151 1.85126422e-152 2.32086144e-022 4.86996669e-023
+  1.02188675e-023 2.14427039e-024]
+ [3.99677436e-002 4.79200704e-003 5.74546606e-004 6.88863351e-005
+  8.25925541e-006 9.90258805e-007 1.18728923e-007 1.42352253e-008
+  1.70675884e-009 2.04635029e-010 2.45350979e-011 2.94168124e-012
+  3.52698350e-013 4.22874253e-014 5.07012960e-015 6.07892628e-016
+  7.28844185e-017 8.73861306e-018 1.40402290e-018 2.25582744e-019
+  3.62441199e-020 5.82330104e-021]
+ [3.18790783e-132 1.01518068e-137 1.21716978e-138 1.45934837e-139
+  1.74971290e-140 2.09785086e-141 2.51525735e-142 3.01571464e-143
+  3.61574721e-144 4.33516744e-145 5.19772972e-146 6.23191483e-147
+  7.47187032e-148 8.95853804e-149 1.07410060e-149 1.28781291e-150
+  1.54404727e-151 1.85126422e-152 2.32086144e-022 4.86996669e-023
+  1.02188675e-023 2.14427039e-024]]
+phi:
+ [[0. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 0. 0. 0.]
+ [0. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [0. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 0. 0. 0.]]
+\end{Verbatim}
+
+    \hypertarget{descripciuxf3n-de-las-pruebas}{%
+\subsection{Descripción de las
+pruebas:}\label{descripciuxf3n-de-las-pruebas}}
+
+En este experimento se entrevistaron a 20 personas, a cada una de ellas
+se les hizo 40 preguntas por lo que se obtuvieron 800 registros en
+total. Estas respuestas permiten observar si una persona es honesta,
+deshonesta o insierto con respecto a los estados observables.
+
+Estos registros se introducen en archivos txt para pasarselos como
+parámetros al algoritmo de entrenamiento Baum-Welch.
+
+    \hypertarget{implementaciuxf3n-de-las-pruebas}{%
+\subsection{Implementación de las pruebas:}\label{implementaciuxf3n-de-las-pruebas}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
