@@ -1,0 +1,38 @@
+digraph  {
+deshonesto;
+incierto;
+honesto;
+CB;
+TN;
+CG;
+MF;
+VI;
+NO;
+deshonesto -> deshonesto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+deshonesto -> incierto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+deshonesto -> honesto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+deshonesto -> CB  [key=0, label="0.09999999999999999", weight="0.09999999999999999"];
+deshonesto -> TN  [key=0, label="0.29999999999999993", weight="0.29999999999999993"];
+deshonesto -> CG  [key=0, label="0.19999999999999998", weight="0.19999999999999998"];
+deshonesto -> MF  [key=0, label="0.09999999999999999", weight="0.09999999999999999"];
+deshonesto -> VI  [key=0, label="0.09999999999999998", weight="0.09999999999999998"];
+deshonesto -> NO  [key=0, label="0.19999999999999998", weight="0.19999999999999998"];
+incierto -> deshonesto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+incierto -> incierto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+incierto -> honesto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+incierto -> CB  [key=0, label="0.09999999999999999", weight="0.09999999999999999"];
+incierto -> TN  [key=0, label="0.29999999999999993", weight="0.29999999999999993"];
+incierto -> CG  [key=0, label="0.19999999999999998", weight="0.19999999999999998"];
+incierto -> MF  [key=0, label="0.09999999999999999", weight="0.09999999999999999"];
+incierto -> VI  [key=0, label="0.09999999999999998", weight="0.09999999999999998"];
+incierto -> NO  [key=0, label="0.19999999999999998", weight="0.19999999999999998"];
+honesto -> deshonesto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+honesto -> incierto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+honesto -> honesto  [key=0, label="0.33333333333333326", weight="0.33333333333333326"];
+honesto -> CB  [key=0, label="0.09999999999999999", weight="0.09999999999999999"];
+honesto -> TN  [key=0, label="0.29999999999999993", weight="0.29999999999999993"];
+honesto -> CG  [key=0, label="0.19999999999999998", weight="0.19999999999999998"];
+honesto -> MF  [key=0, label="0.09999999999999999", weight="0.09999999999999999"];
+honesto -> VI  [key=0, label="0.09999999999999998", weight="0.09999999999999998"];
+honesto -> NO  [key=0, label="0.19999999999999998", weight="0.19999999999999998"];
+}
